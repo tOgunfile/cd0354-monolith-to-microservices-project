@@ -1,0 +1,112 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-feed
+  labels:
+    app: backend-feed
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-feed
+  template:
+    metadata:
+      labels:
+        app: backend-feed
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: backend-feed
+          imagePullPolicy: Always
+          image: togunfile/udagram-api-feed:v1
+          # ports:
+          #   - containerPort: 8080
+          resources:
+            limits:
+              cpu: 512m
+            requests:
+              cpu: 256m
+          env:
+            - name: URL
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: URL
+            - name: AWS_PROFILE
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: AWS_PROFILE
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: AWS_REGION
+            - name: AWS_BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: AWS_BUCKET
+            - name: JWT_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: JWT_SECRET
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: POSTGRES_HOST
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: POSTGRES_DB
+            - name: POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: POSTGRES_USERNAME
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: POSTGRES_PASSWORD
+          volumeMounts:
+            - name: aws-secret
+              mountPath: '/root/.aws/'
+              readOnly: true
+      volumes:
+        - name: aws-secret
+          secret:
+            secretName: aws-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-feed
+  labels:
+    app: backend-feed
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: backend-feed
+
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-backend-feed
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backend-feed
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50

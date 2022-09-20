@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reverseproxy
+  labels:
+    app: reverseproxy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: reverseproxy
+  template:
+    metadata:
+      labels:
+        app: reverseproxy
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: reverseproxy
+          imagePullPolicy: Always
+          image: togunfile/udagram-reverseproxy:v1
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: 512m
+            requests:
+              cpu: 256m
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reverseproxy
+  labels:
+    app: reverseproxy
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: reverseproxy
