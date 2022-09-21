@@ -3,10 +3,9 @@ kind: ConfigMap
 metadata:
   name: config
 data:
-  POSTGRES_HOST: postgres.cduypcarw2le.us-east-1.rds.amazonaws.com
+  POSTGRES_HOST: postgres.cotgippwx1na.us-east-1.rds.amazonaws.com
   POSTGRES_DB: postgres
-  AWS_BUCKET: udagram-361304914071-s3
+  AWS_BUCKET: udagram-s3-263850605115
   AWS_REGION: us-east-1
   AWS_PROFILE: default
-  JWT_SECRET: testing
   URL: http://localhost:8100
