@@ -1,6 +1,7 @@
 import cors from "cors";
 import express from "express";
 import { sequelize } from "./sequelize";
+import morgan from "morgan";
 
 import { IndexRouter } from "./controllers/v0/index.router";
 
@@ -18,6 +19,7 @@ import { V0_FEED_MODELS } from "./controllers/v0/model.index";
   const port = process.env.PORT || 8080;
 
   app.use(bodyParser.json());
+  app.use(morgan("combined"));
 
   // We set the CORS origin to * so that we don't need to
   // worry about the complexities of CORS this lesson. It's

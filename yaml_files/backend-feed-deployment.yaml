@@ -19,13 +19,13 @@ spec:
         - name: backend-feed
           imagePullPolicy: Always
           image: togunfile/udagram-api-feed:v1
-          # ports:
-          #   - containerPort: 8080
-          resources:
-            limits:
-              cpu: 512m
-            requests:
-              cpu: 256m
+          ports:
+            - containerPort: 8080
+          # resources:
+            # limits:
+            #   cpu: 512m
+            # requests:
+            #   cpu: 256m
           env:
             - name: URL
               valueFrom:
