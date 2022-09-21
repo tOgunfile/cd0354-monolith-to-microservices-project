@@ -24,10 +24,9 @@ spec:
           resources:
             limits:
               cpu: "512m"
-              memory: "1Gi"
+              memory: "2Gi"
             requests:
-              cpu: 1
-              memory: "500Mi"
+              cpu: "250m"
             
 ---
 apiVersion: v1
@@ -56,5 +55,5 @@ spec:
     kind: Deployment
     name: frontend
   minReplicas: 1
-  maxReplicas: 5
-  targetCPUUtilizationPercentage: 70
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 50
