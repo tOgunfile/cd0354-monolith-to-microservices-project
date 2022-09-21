@@ -5,7 +5,7 @@ metadata:
   labels:
     app: reverseproxy
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: reverseproxy
@@ -18,7 +18,7 @@ spec:
       containers:
         - name: reverseproxy
           imagePullPolicy: Always
-          image: togunfile/udagram-reverseproxy:v1
+          image: togunfile/udagram-reverseproxy:v2
           ports:
             - containerPort: 8080
           resources:

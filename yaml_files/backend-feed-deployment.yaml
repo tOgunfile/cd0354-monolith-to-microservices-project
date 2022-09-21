@@ -18,15 +18,14 @@ spec:
       containers:
         - name: backend-feed
           imagePullPolicy: Always
-          image: togunfile/udagram-api-feed:v1
+          image: togunfile/udagram-api-feed:v2
           ports:
             - containerPort: 8080
           resources:
             limits:
-              cpu: 2
-              memory: "2048Mi"
+              cpu: "512m"
             requests:
-              cpu: 2
+              cpu: "256m"
           env:
             - name: URL
               valueFrom:
@@ -98,16 +97,16 @@ spec:
   selector:
     app: backend-feed
 
----
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscaler
-metadata:
-  name: hpa-backend-feed
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: backend-feed
-  minReplicas: 2
-  maxReplicas: 5
-  targetCPUUtilizationPercentage: 70
+# ---
+# apiVersion: autoscaling/v1
+# kind: HorizontalPodAutoscaler
+# metadata:
+#   name: hpa-backend-feed
+# spec:
+#   scaleTargetRef:
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     name: backend-feed
+#   minReplicas: 2
+#   maxReplicas: 5
+#   targetCPUUtilizationPercentage: 70
