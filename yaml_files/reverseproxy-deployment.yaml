@@ -15,7 +15,7 @@ spec:
         app: reverseproxy
     spec:
      containers:
-      - image: togunfile/udagram-reverseproxy:v2
+      - image: togunfile/udagram-reverseproxy:v3
         name: reverseproxy
         ports:
         - containerPort: 8080
@@ -25,7 +25,7 @@ spec:
             #   cpu:  "500m"
             #   memory: "500Mi"
             requests:
-              cpu: "800m"
+              cpu: "500m"
 
 ---
 apiVersion: v1
@@ -43,16 +43,16 @@ spec:
       port: 8080
       targetPort: 8080
 
-# ---
-# apiVersion: autoscaling/v1
-# kind: HorizontalPodAutoscaler
-# metadata:
-#   name: hpa-reverseproxy
-# spec:
-#   scaleTargetRef:
-#     apiVersion: apps/v1
-#     kind: Deployment
-#     name: reverseproxy
-#   minReplicas: 1
-#   maxReplicas: 3
-#   targetCPUUtilizationPercentage: 70
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-reverseproxy
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: reverseproxy
+  minReplicas: 2
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 70
