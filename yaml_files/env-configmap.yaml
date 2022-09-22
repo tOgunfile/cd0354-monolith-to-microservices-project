@@ -3,9 +3,9 @@ kind: ConfigMap
 metadata:
   name: config
 data:
-  POSTGRES_HOST: postgres.cotgippwx1na.us-east-1.rds.amazonaws.com
+  POSTGRES_HOST: db-instance-827677616021.cq9xfnjdmkhg.us-east-1.rds.amazonaws.com
   POSTGRES_DB: postgres
-  AWS_BUCKET: udagram-s3-263850605115
+  AWS_BUCKET: udagram-s3-827677616021
   AWS_REGION: us-east-1
   AWS_PROFILE: default
   URL: http://localhost:8100
